@@ -97,26 +97,24 @@ namespace order_book {
         if (BuyOrSell) { // buy order
             if (!this->buyTree) {
                 this->buyTree = limit;
+                this->highestBuy = limit;
                 return limit;
             }
-            curr = this->buyTree;
-            if (!this->highestBuy || limit->limitPrice > this->highestBuy->limitPrice) {
+            if (limit->limitPrice > this->highestBuy->limitPrice) {
                 this->highestBuy = limit;
             }
+            curr = this->buyTree;
+
         } else { // sell order
             if (!this->sellTree) {
                 this->sellTree = limit;
+                this->lowestSell = limit;
                 return limit;
             }
-            curr = this->sellTree;
-            if (!this->lowestSell || limit->limitPrice < this->lowestSell->limitPrice) {
+            if (limit->limitPrice < this->lowestSell->limitPrice) {
                 this->lowestSell = limit;
             }
-        }
-
-        if (!curr) {
-            curr = limit;
-            return limit;
+            curr = this->sellTree;
         }
 
         Limit* prev = nullptr;

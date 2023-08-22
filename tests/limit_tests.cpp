@@ -39,8 +39,9 @@ TEST_CASE("limit constructors are correct") {
 
 TEST_CASE( "limit AddOrder is correct" ) {
 
+    order_book::Limit* l = new order_book::Limit(10);
+
     SECTION( "adding one order" ) {
-        order_book::Limit* l = new order_book::Limit(10);
         order_book::Order* o1 = new order_book::Order({10, true, 10, 10, 10, 10});
     
         l->AddOrder(o1);
@@ -59,7 +60,6 @@ TEST_CASE( "limit AddOrder is correct" ) {
     }
 
     SECTION( "adding two orders" ) {
-        order_book::Limit* l = new order_book::Limit(10);
 
         order_book::Order* o1 = new order_book::Order({10, true, 10, 10, 10, 10});
         order_book::Order* o2 = new order_book::Order({11, true, 20, 10, 10, 10});
@@ -88,9 +88,9 @@ TEST_CASE( "limit AddOrder is correct" ) {
 
 TEST_CASE( "limit RemoveOrder is correct" ) {
 
+    order_book::Limit* l = new order_book::Limit(10);
 
     SECTION( "removing one order" ) {
-        order_book::Limit* l = new order_book::Limit(10);
 
         order_book::Order* o1 = new order_book::Order({10, true, 10, 10, 10, 10});
         order_book::Order* o2 = new order_book::Order({11, true, 20, 10, 10, 10});
@@ -108,7 +108,6 @@ TEST_CASE( "limit RemoveOrder is correct" ) {
     }
 
     SECTION( "removing two orders" ) {
-        order_book::Limit* l = new order_book::Limit(10);
  
         order_book::Order* o1 = new order_book::Order({10, true, 10, 10, 10, 10});
         order_book::Order* o2 = new order_book::Order({11, true, 20, 10, 10, 10});
