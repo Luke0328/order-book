@@ -18,11 +18,14 @@ namespace order_book {
             std::unordered_map<int, Order*> order_map;
             std::unordered_map<double, Limit*> limit_map;
 
+        
             Order *CreateOrder(OrderInfo order_info);
             Limit *GetOrCreateLimit(Order* order);
             Limit *InsertLimit(Limit* limit, bool BuyOrSell);
 
         public:
+            Book();
+
             void Add(OrderInfo order_info);
             // void Cancel(int order_id, int shares);
             void Delete(int order_id);
@@ -31,8 +34,6 @@ namespace order_book {
             Order* GetBestBid();
             Order* GetBestAsk();
             
-            Book();
-
             void DestroyRecursive(Limit* limit);
             ~Book();
     };

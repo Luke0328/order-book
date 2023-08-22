@@ -27,7 +27,7 @@ list(REMOVE_ITEM SOURCES "src/main.cpp")
 add_library(${PROJECT_NAME} ${SOURCES})
 
 target_compile_options(${PROJECT_NAME}
-  PRIVATE -Wall -Wextra -pedantic #-Werror
+  PRIVATE -Wall -Wextra -pedantic -g #-Werror
   )
 
 target_compile_features(${PROJECT_NAME}
@@ -39,7 +39,7 @@ add_executable(${PROJECT_NAME}-exec "src/main.cpp")
 target_link_libraries(${PROJECT_NAME}-exec PUBLIC ${PROJECT_NAME})
 
 target_compile_options(${PROJECT_NAME}-exec
-  PRIVATE -Wall -Wextra -pedantic #-Werror
+  PRIVATE -Wall -Wextra -pedantic -g #-Werror
   )
 
 target_compile_features(${PROJECT_NAME}-exec
@@ -52,7 +52,7 @@ add_executable(tests ${TEST_SOURCES})
 target_link_libraries(tests PUBLIC Catch2::Catch2WithMain ${PROJECT_NAME})
 
 target_compile_options(tests
-  PRIVATE -Wall -Wextra -pedantic #-Werror
+  PRIVATE -Wall -Wextra -pedantic -g #-Werror
   )
 
 target_compile_features(tests

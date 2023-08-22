@@ -56,6 +56,7 @@ namespace order_book
         }
         this->size--;
         this->totalVolume -= order->shares;
+        delete order;
     }
 
 
