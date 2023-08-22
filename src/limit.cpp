@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "order.hpp"
 #include "limit.hpp"
 
@@ -14,8 +16,8 @@ namespace order_book
         this->tailOrder = nullptr;
     }
 
-    Limit::Limit(int limitPrice, int size, int totalVolume)
-        : limitPrice(limitPrice), size(size), totalVolume(totalVolume)
+    Limit::Limit(int limitPrice)
+        : limitPrice(limitPrice), size(0), totalVolume(0)
     {
         this->parent = nullptr;
         this->leftChild = nullptr;
@@ -27,6 +29,8 @@ namespace order_book
     Order* Limit::AddOrder(Order* order)
     {
         order->parentLimit = this;
+        this->size++;
+        this->totalVolume += order->shares;
         if (!headOrder && !tailOrder) {
             headOrder = order;
             tailOrder = order;
@@ -35,9 +39,6 @@ namespace order_book
         this->tailOrder->nextOrder = order;
         order->prevOrder = this->tailOrder;
         tailOrder = order;
-
-        this->size++;
-        this->totalVolume += order->shares;
 
         return order;
     }
@@ -55,14 +56,13 @@ namespace order_book
         }
         this->size--;
         this->totalVolume -= order->shares;
-        delete order;
     }
 
 
     Limit::~Limit()
     {
         Order* curr = this->headOrder;
-        Order* next;
+        Order* next = nullptr;
 
         while (curr) {
             next = curr->nextOrder;

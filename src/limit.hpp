@@ -17,7 +17,7 @@ namespace order_book {
         Order *tailOrder;
 
         Limit();
-        Limit(int limitPrice, int size, int totalVolume);
+        Limit(int limitPrice);
 
         Order* AddOrder(Order* order);
         void RemoveOrder(Order* order);

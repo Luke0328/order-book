@@ -44,14 +44,7 @@ namespace order_book {
             return;
         }
         
-        Limit *parentLimit = order_to_execute->parentLimit;
-        parentLimit->size--;
-        parentLimit->totalVolume -= order_to_execute->shares;
-
-        parentLimit->headOrder = order_to_execute->nextOrder;
-        order_to_execute->nextOrder->prevOrder = nullptr;
-
-        delete order_to_execute;
+        order_to_execute->parentLimit->RemoveOrder(order_to_execute);
     }
 
     int Book::GetVolumeAtLimit(int limit_price)
@@ -90,7 +83,7 @@ namespace order_book {
         if (limit_map.find(order->limit) != limit_map.end()) {
             ret_limit = this->limit_map[order->limit];
         } else {
-            Limit* new_limit = new Limit(order->limit, 0, 0);
+            Limit* new_limit = new Limit(order->limit);
             this->limit_map[order->limit] = new_limit; // add to map
             this->InsertLimit(new_limit, order->buyOrSell);
             ret_limit = new_limit;
