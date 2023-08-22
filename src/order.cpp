@@ -1,6 +1,6 @@
 #include "order.hpp"
 
-namespace crypto_order_book {
+namespace order_book {
 
   Order::Order()
     :Order({0, true, 0, 0, 0, 0})
@@ -20,4 +20,4 @@ namespace crypto_order_book {
   {
   }
 
-} // namespace crypto_order_book
+} // namespace order_book

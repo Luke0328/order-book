@@ -6,7 +6,7 @@
 #include "order.hpp"
 #include "limit.hpp"
 
-namespace crypto_order_book {
+namespace order_book {
 
     class Book {
         private:
@@ -37,6 +37,6 @@ namespace crypto_order_book {
             ~Book();
     };
 
-} // namespace crypto_order_book
+} // namespace order_book
 
 #endif

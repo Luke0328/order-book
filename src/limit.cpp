@@ -1,7 +1,7 @@
 #include "order.hpp"
 #include "limit.hpp"
 
-namespace crypto_order_book
+namespace order_book
 {
     
     Limit::Limit()
@@ -71,4 +71,4 @@ namespace crypto_order_book
         }
     }
 
-} // namespace crypto_order_book
+} // namespace order_book

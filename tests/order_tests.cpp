@@ -3,7 +3,7 @@
 #include "../src/order.hpp"
 
 TEST_CASE("order default constructor is correct") {
-    crypto_order_book::Order o;
+    order_book::Order o;
 
     REQUIRE( o.idNumber == 0 );
     REQUIRE( o.buyOrSell == true );
@@ -18,7 +18,7 @@ TEST_CASE("order default constructor is correct") {
 }
 
 TEST_CASE("order orderInfo constructor is correct") {
-    crypto_order_book::Order o({10, false, 10, 10, 10, 10});
+    order_book::Order o({10, false, 10, 10, 10, 10});
 
     REQUIRE( o.idNumber == 10 );
     REQUIRE( o.buyOrSell == false );

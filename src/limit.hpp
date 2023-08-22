@@ -1,7 +1,7 @@
 #ifndef LIMIT_H
 #define LIMIT_H
 
-namespace crypto_order_book {
+namespace order_book {
 
     class Order;
 
@@ -25,6 +25,6 @@ namespace crypto_order_book {
         ~Limit();
     };
 
-} // namespace crypto_order_book
+} // namespace order_book
 
 #endif

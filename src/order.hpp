@@ -2,7 +2,7 @@
 #define ORDER_H
 
 
-namespace crypto_order_book {
+namespace order_book {
 
     class Limit;
 
@@ -33,6 +33,6 @@ namespace crypto_order_book {
             ~Order();
     };
 
-} // namespace crypto_order_book
+} // namespace order_book
 
 #endif

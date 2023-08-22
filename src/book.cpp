@@ -2,7 +2,7 @@
 #include "limit.hpp"
 #include "book.hpp"
 
-namespace crypto_order_book {
+namespace order_book {
 
     Book::Book()
     {
