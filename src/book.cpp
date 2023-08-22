@@ -33,6 +33,25 @@ namespace crypto_order_book {
     void Book::Execute(int order_id)
     {
         bool buyOrSell = order_map[order_id]->buyOrSell;
+        Order* order_to_execute;
+        if (buyOrSell) {
+            order_to_execute = this->GetBestBid();
+        } else {
+            order_to_execute = this->GetBestAsk();
+        }
+
+        if (order_to_execute == nullptr) {
+            return;
+        }
+        
+        Limit *parentLimit = order_to_execute->parentLimit;
+        parentLimit->size--;
+        parentLimit->totalVolume -= order_to_execute->shares;
+
+        parentLimit->headOrder = order_to_execute->nextOrder;
+        order_to_execute->nextOrder->prevOrder = nullptr;
+
+        delete order_to_execute;
     }
 
     int Book::GetVolumeAtLimit(int limit_price)
@@ -45,12 +64,18 @@ namespace crypto_order_book {
 
     Order* Book::GetBestBid() 
     {
-
+        if (this->highestBuy == nullptr) {
+            return nullptr;
+        }
+        return this->highestBuy->headOrder;
     }
 
-    Order* Book::GetBestOffer() 
+    Order* Book::GetBestAsk() 
     {
-
+        if (this->lowestSell == nullptr) {
+            return nullptr;
+        }
+        return this->lowestSell->headOrder;
     }
 
     Order* Book::CreateOrder(OrderInfo order_info) {
@@ -65,12 +90,11 @@ namespace crypto_order_book {
         if (limit_map.find(order->limit) != limit_map.end()) {
             ret_limit = this->limit_map[order->limit];
         } else {
-            Limit* new_limit = new Limit();
+            Limit* new_limit = new Limit(order->limit, 0, 0);
             this->limit_map[order->limit] = new_limit; // add to map
             this->InsertLimit(new_limit, order->buyOrSell);
             ret_limit = new_limit;
         }
-        
         return ret_limit;
     }
 
@@ -78,9 +102,23 @@ namespace crypto_order_book {
     {
         Limit* curr;
         if (BuyOrSell) { // buy order
+            if (!this->buyTree) {
+                this->buyTree = limit;
+                return limit;
+            }
             curr = this->buyTree;
+            if (!this->highestBuy || limit->limitPrice > this->highestBuy->limitPrice) {
+                this->highestBuy = limit;
+            }
         } else { // sell order
+            if (!this->sellTree) {
+                this->sellTree = limit;
+                return limit;
+            }
             curr = this->sellTree;
+            if (!this->lowestSell || limit->limitPrice < this->lowestSell->limitPrice) {
+                this->lowestSell = limit;
+            }
         }
 
         if (!curr) {
@@ -121,6 +159,5 @@ namespace crypto_order_book {
         DestroyRecursive(this->buyTree);
         DestroyRecursive(this->sellTree);
     }
-
 
 } // namespace cypto_order_book

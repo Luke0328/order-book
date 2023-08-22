@@ -24,12 +24,12 @@ namespace crypto_order_book {
 
         public:
             void Add(OrderInfo order_info);
-            void Cancel(int order_id, int shares);
+            // void Cancel(int order_id, int shares);
             void Delete(int order_id);
             void Execute(int order_id);
             int GetVolumeAtLimit(int limit_price);
             Order* GetBestBid();
-            Order* GetBestOffer();
+            Order* GetBestAsk();
             
             Book();
 
