@@ -18,7 +18,7 @@ namespace order_book {
             std::unordered_map<int, Order*> order_map;
             std::unordered_map<double, Limit*> limit_map;
 
-        
+            // HELPER FUNCTIONS
             Order *CreateOrder(OrderInfo order_info);
             Limit *GetOrCreateLimit(Order* order);
             Limit *InsertLimit(Limit* limit, bool BuyOrSell);
@@ -26,13 +26,13 @@ namespace order_book {
         public:
             Book();
 
-            void Add(OrderInfo order_info);
+            void Add(OrderInfo order_info); // Add order to order book
             // void Cancel(int order_id, int shares);
-            void Delete(int order_id);
-            void Execute(bool buyOrSell);
-            int GetVolumeAtLimit(int limit_price);
-            Order* GetBestBid();
-            Order* GetBestAsk();
+            void Delete(int order_id); // Delete order from anywhere in order book
+            void Execute(bool buyOrSell); // Execute order from inside the book
+            int GetVolumeAtLimit(int limit_price); // Get volumne at specified limit price
+            Order* GetBestBid(); // Get the Best Bid - oldest buy order at highest buy price
+            Order* GetBestAsk(); // Get the Best Ask - oldest sell order at lowest sell price
             
             void DestroyRecursive(Limit* limit);
             ~Book();

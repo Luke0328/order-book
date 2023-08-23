@@ -8,8 +8,8 @@ namespace order_book {
     class Limit {
       public:
         int limitPrice;
-        int size;
-        int totalVolume;
+        int size; // number of orders at this limit
+        int totalVolume; // total number of shares at this limit
         Limit *parent;
         Limit *leftChild;
         Limit *rightChild;
