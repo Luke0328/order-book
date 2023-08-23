@@ -64,9 +64,10 @@ int main(int argc, char** argv) {
         msg_count++;
     }
 
-
     std::cout << msg_count << " messages added to order book." << std::endl;
-    std::cin.get();
+    std::cout << std::endl;
+
+    book.Print();
 
     file.close();
     return 0;

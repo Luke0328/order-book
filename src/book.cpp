@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stack>
+#include <string>
 
 #include "order.hpp"
 #include "limit.hpp"
@@ -136,6 +138,39 @@ namespace order_book {
         limit->parent = prev;
 
         return limit;
+    }
+
+    void Book::RevOrderPrint(Limit* node) 
+    {
+        std::stack<Limit*> st;
+
+        Limit* curr = node;
+        while (curr || !st.empty()) {
+            while (curr) {
+                st.push(curr);
+                curr = curr->rightChild;
+            }
+
+            curr = st.top();
+            st.pop();
+            std::string line = 
+                "Price: " + std::to_string(curr->limitPrice) + " - " + 
+                "Size: " + std::to_string(curr->size) + " - " + 
+                "Volume: " + std::to_string(curr->totalVolume);
+            std::cout << line << std::endl;
+
+            curr = curr->leftChild;
+        }
+    }
+
+    void Book::Print() 
+    {
+        std::cout << "SELL LIMITS:" << std::endl;
+        this->RevOrderPrint(this->sellTree);
+        std::cout << std::endl;
+        std::cout << "BUY LIMITS:" << std::endl;
+        this->RevOrderPrint(this->buyTree);
+
     }
 
     void Book::DestroyRecursive(Limit *limit)

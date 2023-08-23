@@ -23,6 +23,8 @@ namespace order_book {
             Limit *GetOrCreateLimit(Order* order);
             Limit *InsertLimit(Limit* limit, bool BuyOrSell);
 
+            void RevOrderPrint(Limit* node);
+
         public:
             Book();
 
@@ -34,6 +36,8 @@ namespace order_book {
             Order* GetBestBid(); // Get the Best Bid - oldest buy order at highest buy price
             Order* GetBestAsk(); // Get the Best Ask - oldest sell order at lowest sell price
             
+            void Print();
+
             void DestroyRecursive(Limit* limit);
             ~Book();
     };
