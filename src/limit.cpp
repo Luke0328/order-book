@@ -45,7 +45,6 @@ namespace order_book
 
     void Limit::RemoveOrder(Order* order)
     {
-
         if (this->headOrder == order && this->tailOrder == order) {
             this->headOrder = this->tailOrder = nullptr;
         } else if (this->headOrder == order && order->nextOrder) {

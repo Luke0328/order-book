@@ -5,6 +5,11 @@ namespace order_book {
 
     class Order;
 
+    enum Color {
+      BLACK = 0,
+      RED = 1
+    };
+
     class Limit {
       public:
         int limitPrice;
