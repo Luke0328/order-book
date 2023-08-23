@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "order.hpp"
 #include "limit.hpp"
 #include "book.hpp"
@@ -26,8 +28,8 @@ namespace order_book {
         }
         Order* order = this->order_map[order_id];
         Limit* parent_limit = this->limit_map[order->limit];
-        parent_limit->RemoveOrder(order);
         this->order_map.erase(order_id);
+        parent_limit->RemoveOrder(order);
     }
 
     void Book::Execute(bool buyOrSell)
@@ -43,8 +45,8 @@ namespace order_book {
             return;
         }
         
-        order_to_execute->parentLimit->RemoveOrder(order_to_execute);
         this->order_map.erase(order_to_execute->idNumber);
+        order_to_execute->parentLimit->RemoveOrder(order_to_execute);
     }
 
     int Book::GetVolumeAtLimit(int limit_price)

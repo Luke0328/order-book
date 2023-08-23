@@ -45,14 +45,18 @@ namespace order_book
 
     void Limit::RemoveOrder(Order* order)
     {
+
         if (this->headOrder == order && this->tailOrder == order) {
-            headOrder = tailOrder = nullptr;
+            this->headOrder = this->tailOrder = nullptr;
         } else if (this->headOrder == order && order->nextOrder) {
             this->headOrder = order->nextOrder;
             order->nextOrder->prevOrder = nullptr;
         } else if (this->tailOrder == order && order->prevOrder) {
             this->tailOrder = order->prevOrder;
             order->prevOrder->nextOrder = nullptr;
+        } else {
+            order->prevOrder->nextOrder = order->nextOrder;
+            order->nextOrder->prevOrder = order->prevOrder;
         }
         this->size--;
         this->totalVolume -= order->shares;
