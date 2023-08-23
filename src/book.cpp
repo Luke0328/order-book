@@ -30,9 +30,8 @@ namespace order_book {
         this->order_map.erase(order_id);
     }
 
-    void Book::Execute(int order_id)
+    void Book::Execute(bool buyOrSell)
     {
-        bool buyOrSell = order_map[order_id]->buyOrSell;
         Order* order_to_execute;
         if (buyOrSell) {
             order_to_execute = this->GetBestBid();
@@ -45,6 +44,7 @@ namespace order_book {
         }
         
         order_to_execute->parentLimit->RemoveOrder(order_to_execute);
+        this->order_map.erase(order_to_execute->idNumber);
     }
 
     int Book::GetVolumeAtLimit(int limit_price)
@@ -95,7 +95,7 @@ namespace order_book {
     {
         Limit* curr;
         if (BuyOrSell) { // buy order
-            if (!this->buyTree) {
+            if (this->buyTree == nullptr) {
                 this->buyTree = limit;
                 this->highestBuy = limit;
                 return limit;
@@ -106,7 +106,7 @@ namespace order_book {
             curr = this->buyTree;
 
         } else { // sell order
-            if (!this->sellTree) {
+            if (this->sellTree == nullptr) {
                 this->sellTree = limit;
                 this->lowestSell = limit;
                 return limit;

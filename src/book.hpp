@@ -29,7 +29,7 @@ namespace order_book {
             void Add(OrderInfo order_info);
             // void Cancel(int order_id, int shares);
             void Delete(int order_id);
-            void Execute(int order_id);
+            void Execute(bool buyOrSell);
             int GetVolumeAtLimit(int limit_price);
             Order* GetBestBid();
             Order* GetBestAsk();

@@ -115,8 +115,68 @@ TEST_CASE( "book Delete is correct" ) {
 
     order_book::Book* b = new order_book::Book();
 
-    SECTION( "deleting buy order is correct" ) {
-        
+    SECTION( "deleting one order is correct" ) {
+
+        order_book::OrderInfo buy_order_1 = {1, true, 25, 10, 10, 10};
+        b->Add(buy_order_1);
+        b->Delete(1);
+
+        REQUIRE( b->GetVolumeAtLimit(10) == 0 );
+        REQUIRE( b->GetBestBid() == nullptr );
+
+        delete b;
+    }
+
+    SECTION( "deleting order updates best bid" ) {
+
+        order_book::OrderInfo buy_order_1 = {1, true, 25, 10, 10, 10};
+        order_book::OrderInfo buy_order_2 = {2, true, 50, 10, 11, 11};
+
+        b->Add(buy_order_1);
+        b->Add(buy_order_2);
+        b->Delete(1);
+
+        REQUIRE( b->GetVolumeAtLimit(10) == 50 );
+        REQUIRE( b->GetBestBid() != nullptr );
+        REQUIRE( b->GetBestBid()->idNumber == 2 );
+        REQUIRE( b->GetBestBid()->shares == 50 );
+
+        delete b;
+    }
+
+}
+
+TEST_CASE( "book Execute is correct" ) {
+
+    order_book::Book* b = new order_book::Book();
+
+    SECTION( "deleting one order is correct" ) {
+
+        order_book::OrderInfo buy_order_1 = {1, true, 25, 10, 10, 10};
+        b->Add(buy_order_1);
+        b->Execute(true);
+
+        REQUIRE( b->GetVolumeAtLimit(10) == 0 );
+        REQUIRE( b->GetBestBid() == nullptr );
+
+        delete b;
+    }
+
+    SECTION( "deleting order updates best bid" ) {
+
+        order_book::OrderInfo buy_order_1 = {1, true, 25, 10, 10, 10};
+        order_book::OrderInfo buy_order_2 = {2, true, 50, 10, 11, 11};
+
+        b->Add(buy_order_1);
+        b->Add(buy_order_2);
+        b->Execute(true);
+
+        REQUIRE( b->GetVolumeAtLimit(10) == 50 );
+        REQUIRE( b->GetBestBid() != nullptr );
+        REQUIRE( b->GetBestBid()->idNumber == 2 );
+        REQUIRE( b->GetBestBid()->shares == 50 );
+
+        delete b;
     }
 
 }
