@@ -15,6 +15,7 @@ namespace order_book {
         int limitPrice;
         int size; // number of orders at this limit
         int totalVolume; // total number of shares at this limit
+        Color color;
         Limit *parent;
         Limit *leftChild;
         Limit *rightChild;

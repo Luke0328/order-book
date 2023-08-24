@@ -31,9 +31,9 @@ namespace order_book
         order->parentLimit = this;
         this->size++;
         this->totalVolume += order->shares;
-        if (headOrder == nullptr && tailOrder == nullptr) {
-            headOrder = order;
-            tailOrder = order;
+        if (this->headOrder == nullptr && this->tailOrder == nullptr) {
+            this->headOrder = order;
+            this->tailOrder = order;
             return order;
         }
         this->tailOrder->nextOrder = order;

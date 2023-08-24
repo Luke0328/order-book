@@ -5,13 +5,14 @@
 
 #include "order.hpp"
 #include "limit.hpp"
+#include "limit_tree.hpp"
 
 namespace order_book {
 
     class Book {
         private:
-            Limit *buyTree;
-            Limit *sellTree;
+            LimitTree *buyTree;
+            LimitTree *sellTree;
             Limit *lowestSell;
             Limit *highestBuy;
 
@@ -22,8 +23,6 @@ namespace order_book {
             Order *CreateOrder(OrderInfo order_info);
             Limit *GetOrCreateLimit(Order* order);
             Limit *InsertLimit(Limit* limit, bool BuyOrSell);
-
-            void RevOrderPrint(Limit* node);
 
         public:
             Book();
@@ -38,7 +37,6 @@ namespace order_book {
             
             void Print();
 
-            void DestroyRecursive(Limit* limit);
             ~Book();
     };
 

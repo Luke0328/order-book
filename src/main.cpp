@@ -8,6 +8,8 @@
 #include "limit.hpp"
 #include "order.hpp"
 
+#define MSG_LIMIT 100
+
 using namespace order_book;
 
 int main(int argc, char** argv) {

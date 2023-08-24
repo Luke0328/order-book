@@ -1,17 +1,16 @@
 #include <iostream>
-#include <stack>
-#include <string>
 
 #include "order.hpp"
 #include "limit.hpp"
+#include "limit_tree.hpp"
 #include "book.hpp"
 
 namespace order_book {
 
     Book::Book()
     {
-        this->buyTree = nullptr;
-        this->sellTree = nullptr;
+        this->buyTree = new LimitTree();
+        this->sellTree = new LimitTree();
         this->lowestSell = nullptr;
         this->highestBuy = nullptr;
     }
@@ -97,95 +96,36 @@ namespace order_book {
 
     Limit* Book::InsertLimit(Limit* limit, bool BuyOrSell)
     {
-        Limit* curr;
+        // std::cout << "InsertLimit" << std::endl;
+        Limit* ret_limit;
         if (BuyOrSell) { // buy order
-            if (this->buyTree == nullptr) {
-                this->buyTree = limit;
-                this->highestBuy = limit;
-                return limit;
-            }
-            if (limit->limitPrice > this->highestBuy->limitPrice) {
+            if (this->highestBuy == nullptr || limit->limitPrice > this->highestBuy->limitPrice) {
                 this->highestBuy = limit;
             }
-            curr = this->buyTree;
-
+            ret_limit = this->buyTree->Insert(limit);
         } else { // sell order
-            if (this->sellTree == nullptr) {
-                this->sellTree = limit;
+            if (this->lowestSell == nullptr || limit->limitPrice < this->lowestSell->limitPrice) {
                 this->lowestSell = limit;
-                return limit;
-            }
-            if (limit->limitPrice < this->lowestSell->limitPrice) {
-                this->lowestSell = limit;
-            }
-            curr = this->sellTree;
+            }            
+            ret_limit = this->sellTree->Insert(limit);
         }
-
-        Limit* prev = nullptr;
-        while (curr) {
-            prev = curr;
-            if (limit->limitPrice <= curr->limitPrice) {
-                curr = curr->leftChild;
-            } else {
-                curr = curr->rightChild;
-            }
-        }
-        if (limit->limitPrice <= prev->limitPrice) {
-            prev->leftChild = limit;
-        } else {
-            prev->rightChild = limit;
-        }
-        limit->parent = prev;
-
-        return limit;
-    }
-
-    void Book::RevOrderPrint(Limit* node) 
-    {
-        std::stack<Limit*> st;
-
-        Limit* curr = node;
-        while (curr || !st.empty()) {
-            while (curr) {
-                st.push(curr);
-                curr = curr->rightChild;
-            }
-
-            curr = st.top();
-            st.pop();
-            std::string line = 
-                "Price: " + std::to_string(curr->limitPrice) + " - " + 
-                "Size: " + std::to_string(curr->size) + " - " + 
-                "Volume: " + std::to_string(curr->totalVolume);
-            std::cout << line << std::endl;
-
-            curr = curr->leftChild;
-        }
+        return ret_limit;
     }
 
     void Book::Print() 
     {
         std::cout << "SELL LIMITS:" << std::endl;
-        this->RevOrderPrint(this->sellTree);
+        this->sellTree->Print();
         std::cout << std::endl;
         std::cout << "BUY LIMITS:" << std::endl;
-        this->RevOrderPrint(this->buyTree);
+        this->buyTree->Print();
 
-    }
-
-    void Book::DestroyRecursive(Limit *limit)
-    {
-        if (limit) {
-            DestroyRecursive(limit->leftChild);
-            DestroyRecursive(limit->rightChild);
-            delete limit;
-        }
     }
 
     Book::~Book()
     {
-        DestroyRecursive(this->buyTree);
-        DestroyRecursive(this->sellTree);
+        delete this->buyTree;
+        delete this->sellTree;
     }
 
 } // namespace cypto_order_book
